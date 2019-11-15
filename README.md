@@ -1,4 +1,4 @@
-# AGED
+# AGED (Analysis of Gene Expression in Dementia)
 
 Dementia is a condition manifested through a cluster of symptoms targeting the highest functions of the brain: speech, memory, thinking, and judgement. A remedy for reversing or halting the progress of this syndrome remains a conundrum for medical science to this day. Efforts are currently being focused to understand its genetic manifestation at molecular level in order to find new targets for drugs. A clear understanding of the driving mechanism in dementia is yet to be formed, hence it is important to take measures to improve the state of dementia research. The present project aims to do this by creating an application for employment of data science techniques in clinical practice.
 
