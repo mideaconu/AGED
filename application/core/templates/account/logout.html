@@ -1,0 +1,45 @@
+{% load i18n %}
+{% load account socialaccount %}
+{% include "base_generic.html" %}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+{% block title %}<title>AGED</title>{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div style="margin-top:20px">
+      <div class="text-center">
+        <!-- HEADER -->
+        <h1 style="font-size:650%;">AGED</h1>
+        <h3>Analysis of Gene Expression in Dementia</h3>
+        <br/><br/><br/><br/>
+        <div id="left">
+          <h2><a href="javascript:history.go(-1);" style="margin-left:-15em;"><<</a></h2>
+        </div>
+        <div id="right">
+        </div>
+        <br/><br/><br/>
+        <hr><br/><br/><br/><br/>
+        <!-- CONTENT -->
+        <h1>Sign Out</h1>
+        <br/>
+        <h4>{% trans 'Are you sure you want to sign out?' %}</h4>
+        <div class = "container" style="width:500px;">
+          <form method="post" action="{% url 'account_logout' %}">
+            {% csrf_token %}
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+            {% endif %}
+            <br/>
+            {% buttons submit='Sign Out'%}{% endbuttons %}
+          </form>
+        </div>
+      </div>
+      <br/><br/> 
+      <hr> 
+    </div>
+  </div>
+{% endblock %}

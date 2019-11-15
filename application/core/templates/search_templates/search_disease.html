@@ -1,0 +1,99 @@
+{% include "base_generic.html" %}
+{% load i18n %}
+{% load account socialaccount %}
+
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_messages %}
+<head>
+<style>
+#left {
+  width: 500px;
+  float: left;
+  font-size: 100%;
+  margin-bottom: 5px;
+}
+#right {
+  margin-left: 500px;
+  font-size: 100%;
+  margin-bottom: 5px;
+  }
+.clear {
+  clear: both;
+}
+</style>
+</head>
+
+{% block content %}
+  <div class="container">
+    <div style="margin-top:20px">
+      <div class="text-center">
+        <!-- HEADER -->
+        <h1 style="font-size:650%;">AGED</h1>
+        <h3>Analysis of Gene Expression in Dementia</h3> <br/><br/><br/><br/> 
+        <div id="left">
+          <h2><a href="javascript:history.go(-1);" style="margin-left:-15em;"><<</a></h2>
+        </div>
+        <div id="right">
+        </div>
+        <br/><br/><br/>
+        <hr><br/><br/><br/><br/>
+        <!-- CONTENT -->
+        <form method="GET" action={% url 'search_disease' %} class="navbar-form">
+          <div class="form-group">
+            <label class="control-label" for="search-field">
+            <i class="glyphicon glyphicon-search"></i></label>
+            <input type="text" value="{{ request.GET.q }}" name="q" class="form-control search-field" placeholder="Search..." id="search-field" />
+          </div>
+        </form>
+        <br/>
+        <h1>Disease Library</h1>
+        <br/><br/>
+        <a href="/diseases/create">{% buttons submit='Create Disease'%}{% endbuttons %}</a> 
+        <br/><br/><br/>
+      </div>
+      <!-- DISEASE LIST -->
+      {% if diseases %}   
+        <ul style="display:table; margin:0 auto;">
+        {% for disease in diseases %}
+            <div id="left">
+              <a href="{{ disease.get_absolute_url }}">{{ disease.name }} ({{disease.abbreviation}})</a>
+            </div>
+            <div id="right">
+              <a href="{{ disease.get_absolute_url }}/update">{% bootstrap_button "Update" size="xs" button_type="submit" button_class="btn-primary" %}</a>
+              <a href="{{ disease.get_absolute_url }}/confirm_delete">{% bootstrap_button "Delete" size="xs" button_type="submit" button_class="btn-danger" %}</a>
+            </div>
+        {% endfor %}
+        </ul>
+      {% else %}
+      <div class="text-center">
+        <h4>There are no matching diseases.</h4>
+      </div>
+      {% endif %}
+      <br/>
+      <div class="text-center">
+      <!-- PAGINATION -->
+      {% block pagination %}
+        {% if is_paginated %}
+          <div class="pagination">
+            <span class="page-links">
+              <span class="page-current">
+                <h4>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</h4>
+              </span>
+              {% if page_obj.has_previous %}
+                <h3><a href="{{ request.path }}?page={{ page_obj.previous_page_number }}"><<</a></h3>
+                <br/>
+              {% endif %}
+              {% if page_obj.has_next %}
+                <h3><a href="{{ request.path }}?page={{ page_obj.next_page_number }}">>></a></h3>
+              {% endif %}
+            </span>
+          </div>
+        {% endif %}
+      {% endblock %}   
+      <br/><br/> 
+      </div>
+      <hr> 
+    </div>
+  </div>
+{% endblock %}

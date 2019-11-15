@@ -1,0 +1,47 @@
+{% include "base_generic.html" %}
+{% load i18n %}
+{% load account socialaccount %}
+
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_messages %}
+
+{% block content %}
+  <div class="container">
+    <div style="margin-top:20px">
+      <div class="text-center">
+        <!-- HEADER -->
+        <h1 style="font-size:650%;">AGED</h1>
+        <h3>Analysis of Gene Expression in Dementia</h3>
+        <br/><br/><br/><br/>
+        <div id="left">
+          <h2><a href="javascript:history.go(-1);" style="margin-left:-15em;"><<</a></h2>
+        </div>
+        <div id="right">
+        </div>
+        <br/><br/><br/>
+        <hr><br/><br/><br/><br/>
+        <!-- CONTENT -->
+        <h1>{{ rfmodel.model_name }}</h1>
+        <br/><br/>
+        <p><strong>Description: </strong></br> {{ rfmodel.description }}</p>
+        <p><strong>Count Data: </strong><h4><a href="{{ rfmodel.count_data.get_absolute_url }}">{{ rfmodel.count_data }}</p></a></h4>
+        <h3><strong>Disease(s): </strong></h3>
+          {% for disease in diseases %}
+            <h4><a href="/diseases/{{ disease.abbreviation }}">{{ disease }}</a></h4>
+          {% endfor %}
+        <br/>
+        <p><strong>Number of Estimators: </strong>{{ rfmodel.n_estimators }}</p>
+        <p><strong>Maximum Depth: </strong>{{ rfmodel.max_depth }}</p>
+        <p><strong>Criterion: </strong>{{ rfmodel.criterion }}</p> 
+        <p><strong>Bootstrap: </strong>{{ rfmodel.bootstrap }}</p> <br/>
+        <a href="/media/models/RF/{{rfmodel.count_data.study.pk}}/{{rfmodel.model_name}}.sav" style="text-decoration:None">{% buttons submit='Download Model'%}{% endbuttons %}</a>
+        </br>
+        <a href="{% url 'rf_genes' model_name=rfmodel.model_name %}">{% buttons submit='Show Selected Genes'%}{% endbuttons %}</a>
+        </div>
+      </div>
+      <br/><br/>
+      <hr> 
+    </div>
+  </div>
+{% endblock %}

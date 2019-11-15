@@ -1,0 +1,74 @@
+{% include "base_generic.html" %}
+{% load i18n %}
+{% load account socialaccount %}
+
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_messages %}
+<style>
+#left {
+  width: 600px;
+  float: left;
+  font-size: 100%;
+  margin-bottom: 5px;
+}
+#right {
+  margin-left: 700px;
+  font-size: 100%;
+  margin-bottom: 5px;
+  }
+.clear {
+  clear: both;
+}
+</style>
+
+{% block content %}
+  <div class="container">
+    <div style="margin-top:20px">
+      <div class="text-center">
+        <!-- HEADER -->
+        <h1 style="font-size:650%;">AGED</h1>
+        <h3>Analysis of Gene Expression in Dementia</h3> <br/><br/><br/><br/> 
+        <div id="left">
+          <h2><a href="javascript:history.go(-1);" style="margin-left:-15em;"><<</a></h2>
+        </div>
+        <div id="right">
+        </div>
+        <br/><br/><br/>
+        <hr><br/><br/><br/><br/>
+        <!-- CONTENT -->
+        <h1>{{ study.title }}</h1>
+        <br/>
+        <div class="container" style="width:800px;">
+          <p><strong>DOI: </strong>{{ study.DOI }}</a></p>
+          <p><strong>Publication Date: </strong>{{ study.publication_date|date:"jS F Y"  }}</p><br/>
+          <h3><strong>Disease(s): </strong></h3><p>
+            <div style="display:table; margin:0 auto;">
+            {% for disease in disease_list %}
+              <h4><a href="/diseases/{{ disease.abbreviation }}">{{ disease }}</a></h4>
+            {% endfor %}
+            </div>
+          </p>
+          <h3><strong>Dataset(s): </strong></h3><p>
+            <div style="display:table; margin:0 auto;">
+            {% for count_data in count_data_list %}
+              <h4><a href="/studies/{{study.title}}/count_data/{{ count_data }}">{{ count_data }}</a></h4>
+            {% endfor %}
+            </div>
+          </p><br/>
+        </div>
+        <a href="{{ study.url }}">{% buttons submit='Access Article'%}{% endbuttons %}</a>
+        <a href="/studies/{{study.title}}/count_data/create">{% buttons submit='Upload Dataset'%}{% endbuttons %}</a>
+        <br/>
+        <div id="left" style="width: 700px;">
+          <a href="{{ study.get_absolute_url }}/update">{% bootstrap_button "Update" button_type="submit" button_class="btn-primary" %}</a>
+        </div>
+        <div id="right" style="width: 50px;">
+          <a href="{{ study.get_absolute_url }}/confirm_delete">{% bootstrap_button "Delete" button_class="btn-danger" %}</a>
+        </div>
+      </div>
+      <br/><br/><br/>
+      <hr> 
+    </div>
+  </div>
+{% endblock %}

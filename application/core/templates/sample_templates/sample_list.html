@@ -1,0 +1,98 @@
+{% include "base_generic.html" %}
+{% load i18n %}
+{% load account socialaccount %}
+
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+<style>
+#left {
+  width: 600px;
+  float: left;
+  font-size: 100%;
+  margin-bottom: 5px;
+}
+#right {
+  margin-left: 600px;
+  font-size: 100%;
+  margin-bottom: 5px;
+  }
+.clear {
+  clear: both;
+}
+</style>
+
+{% block content %}
+  <div class="container">
+    <div style="margin-top:20px">
+      <div class="text-center">
+        <!-- HEADER -->
+        <h1 style="font-size:650%;">AGED</h1>
+        <h3>Analysis of Gene Expression in Dementia</h3>
+        <br/><br/><br/><br/>
+        <div id="left">
+          <h2><a href="javascript:history.go(-1);" style="margin-left:-15em;"><<</a></h2>
+        </div>
+        <div id="right">
+        </div>
+        <br/><br/><br/>
+        <hr><br/><br/><br/><br/>
+        <!-- CONTENT -->
+        <form method="GET" action={% url 'search_sample' %} class="navbar-form">
+          <div class="form-group">
+            <label class="control-label" for="search-field">
+            <i class="glyphicon glyphicon-search"></i></label>
+            <input type="text" value="{{ request.GET.q }}" name="q" class="form-control search-field" placeholder="Search..." id="search-field" />
+          </div>
+        </form>
+        <br/>
+        <h1>Sample List</h1>
+        <br/><br/>
+        <a href="{% url 'import_sample' title=title name=name %}">{% bootstrap_button "Import Sample Set" button_type="submit" %}</a>
+        <br/><br/><br/>
+        </div>
+        <!-- SAMPLE LIST -->
+        {% if sample_list %}
+        <div style="display:table; margin:0 auto;">
+          {% for sample in sample_list %}
+            <a href="{{ sample.get_absolute_url }}">{{ sample.sample_ID }}</a>
+            <br/>
+          {% endfor %}
+        </div>
+        {% else %}
+          <h3>There are no samples in the library.</h3>
+        {% endif %}
+      <br/>
+      <div class="text-center">
+        <!-- PAGINATION -->
+      {% block pagination %}
+        {% if is_paginated %}
+          <div class="pagination">
+            <span class="page-links">
+              <span class="page-current">
+                <h4>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</h4>
+              </span>
+              {% if page_obj.has_previous %}
+                <div id="left" style="width: 30px;">
+                  <h3><a href="{{ request.path }}?page={{ page_obj.previous_page_number }}"><<</a></h3>
+                </div>
+              {% endif %}
+              {% if page_obj.has_next %}
+              <div class="float-right">
+                <div id="right" style="margin-left: 50px;">
+                  <h3><a href="{{ request.path }}?page={{ page_obj.next_page_number }}">>></a></h3>
+                </div>
+              </div>
+              {% endif %}
+            </span>
+          </div>
+        {% endif %}
+      {% endblock %}
+      <br/><br/> 
+      </div>
+      <hr>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% load account %}
+{% user_display user as user_display %}
+{% load i18n %}
+{% autoescape off %}
+{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}
+
+Dear user,
+
+We received a request to set up your AGED account as {{ user_display }}. To confirm this is correct, please go to {{ activate_url }}
+{% endblocktrans %}{% endautoescape %}
+Best wishes,
+AGED Team

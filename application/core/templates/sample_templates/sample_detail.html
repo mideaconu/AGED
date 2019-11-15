@@ -1,0 +1,46 @@
+{% include "base_generic.html" %}
+{% load i18n %}
+{% load account socialaccount %}
+
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_messages %}
+
+{% block content %}
+  <div class="container">
+    <div style="margin-top:20px">
+      <div class="text-center">
+        <!-- HEADER -->
+        <h1 style="font-size:650%;">AGED</h1>
+        <h3>Analysis of Gene Expression in Dementia</h3>
+        <br/><br/><br/><br/> 
+        <div id="left">
+          <h2><a href="javascript:history.go(-1);" style="margin-left:-15em;"><<</a>
+          </h2>
+        </div>
+        <div id="right">
+        </div>
+        <br/><br/><br/>
+        <hr><br/><br/><br/><br/>
+        <!-- CONTENT -->
+        <h1>{{ sample.sample_ID }}</h1>
+        <br/>
+        <div class="container" style="width:800px;">
+          <h3><strong>Study: </strong><a href="{{ sample.count_data.study.get_absolute_url }}">{{ sample.count_data.study.title }}</a></h3>
+          <br/>
+          <h3><strong>Tissue: </strong>{{ sample.brain_region }}</h3>
+          <h3><strong>Diagnosis: </strong><a href="{{ sample.diagnosis.get_absolute_url }}">{{ sample.diagnosis }}</a></h3>
+          <br/>
+          <p><strong>Sex: </strong>{{ sample.sex }}</p>  
+          <p><strong>Age at Death: </strong>{{ sample.age_at_death }}</p>  
+          <p><strong>Source: </strong>{{ sample.sample_source }}</p>
+          <p><strong>ApoE: </strong>{{ sample.ApoE }}</p>  
+          <p><strong>RIN: </strong>{{ sample.RIN }}</p>  
+          <p><strong>PMI: </strong>{{ sample.PMI }}</p>
+        </div>
+      </div>
+      <br/><br/>
+      <hr> 
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,128 @@
+{% load i18n %}
+{% load account socialaccount %}
+{% include "base_generic.html" %}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+<style>
+  .column-left {
+    float: left;
+    width: 33.333%;
+  }
+
+  .column-right {
+    float: right;
+    width: 33.333%;
+  }
+
+  .column-center {
+    display: inline-block;
+    width: 33.333%;
+  }  
+  #left {
+    width: 500px;
+    float: left;
+  }
+  #right {
+    margin-left: 500px;
+    }
+  .clear {
+    clear: both;
+  }
+</style>
+{% block title %}<title>AGED</title>{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div style="margin-top:20px">
+      <div class="text-center">
+        <!-- HEADER -->
+        <h1 style="font-size:650%;">AGED</h1>
+        <h3>Analysis of Gene Expression in Dementia</h3>
+        <br/><br/><br/><br/> 
+        <div id="left">
+          <h2><a href="javascript:history.go(-1);" style="margin-left:-15em;"><<</a></h2>
+        </div>
+        <div id="right">
+        </div>
+        <br/><br/><br/>
+        <hr><br/><br/><br/><br/>
+        <!-- CONTENT -->
+        <h1>Email Address</h1>
+        <br/>
+        {% if user.emailaddress_set.all %}
+          <h4>The following e-mail addresses are associated with your account:</h4>
+          <br/>
+
+          <div class = "container" style="width:500px;">
+          <form action="{% url 'account_email' %}" class="email_list" method="post">
+          {% csrf_token %}
+          {% bootstrap_form form%}
+          <fieldset class="blockLabels">
+            {% for emailaddress in user.emailaddress_set.all %}
+            <div class="ctrlHolder">
+              <label for="email_radio_{{forloop.counter}}" class="{% if emailaddress.primary %}primary_email{%endif%}">
+              <input id="email_radio_{{forloop.counter}}" type="radio" name="email" {% if emailaddress.primary or user.emailaddress_set.count == 1 %}checked="checked"{%endif %} value="{{emailaddress.email}}"/>
+            {{ emailaddress.email }}
+              {% if emailaddress.verified %}
+                <span class="verified">{% trans "Verified" %}</span>
+              {% else %}
+                <span class="unverified">{% trans "Unverified" %}</span>
+              {% endif %}
+                {% if emailaddress.primary %}<span class="primary">{% trans "Primary" %}</span>{% endif %}
+            </label>
+            </div>
+            {% endfor %}
+          </div>
+          <br/>
+          <div class="container" style="width:800px;">
+            <div class="buttonHolder">
+              <div class="column-center">
+                {% buttons submit='Re-send Verification'%}{% endbuttons %}
+              </div>
+              <div class="column-left">
+                {% bootstrap_button "Make Primary" button_type="submit" button_class="btn-primary" %}
+              </div>
+              <div class="column-right">
+                {% bootstrap_button "Remove" button_type="submit" button_class="btn-danger" %}
+              </div>
+            </div>
+          </div>
+          </fieldset>
+        </form>
+        {% else %}
+          <h4><strong>Warning:</strong>You currently do not have any e-mail address set up. You should really add an e-mail address so you can receive notifications, reset your password, etc.</h4>
+        {% endif %}
+        <br/><br/>
+  <div class="container"> 
+      <div class="text-center">
+        <h2>Add E-mail Address</h2>
+        <div class = "container" style="width:500px;">
+          <form method="post" action="{% url 'account_email' %}" class="add_email">
+              {% csrf_token %}
+              {% bootstrap_form form%}
+              {% buttons submit='Add E-mail'%}{% endbuttons %}
+          </form>
+        </div>
+      <br/><br/> 
+      <hr> 
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_body %}
+<script type="text/javascript">
+(function() {
+  var message = "{% trans 'Do you really want to remove the selected e-mail address?' %}";
+  var actions = document.getElementsByName('action_remove');
+  if (actions.length) {
+    actions[0].addEventListener("click", function(e) {
+      if (! confirm(message)) {
+        e.preventDefault();
+      }
+    });
+  }
+})();
+</script>
+{% endblock %}
